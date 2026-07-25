@@ -98,7 +98,7 @@ int fat32_ls(const char *path);
 int fat32_open(const char *path, uint8_t write);
 int fat32_read(int fd, uint8_t *buf, uint32_t len);
 int fat32_close(int fd);
-
+int vef_exec (uint8_t *buf, uint64_t size);
 void     pit_init(uint32_t hz);
 void     pit_handler(void);
 uint32_t pit_get_ticks(void);
