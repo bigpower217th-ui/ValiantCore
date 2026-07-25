@@ -1,3 +1,8 @@
+/*
+ * ValiantCore Kernel
+ * Copyright (C) 2026 bigpower
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
 #![no_std]
 #![allow(dead_code)]
 #![allow(static_mut_refs)]
@@ -158,12 +163,12 @@ impl SafeDiskManager {
         }
     }
 
-    /* ── İstatistik ─────────────────────────────────────────── */
+    
     pub fn write_count(&self) -> u64 { self.write_count }
     pub fn error_count(&self) -> u32 { self.error_count }
 }
 
-/* ── C'ye açık fonksiyonlar ─────────────────────────────────── */
+
 static mut DISK_MANAGER: SafeDiskManager = SafeDiskManager::new();
 
 #[no_mangle]
