@@ -4,7 +4,7 @@
 
 use core::panic::PanicInfo;
 
-/* ── Hibrit tip ─────────────────────────────────────────────── */
+
 #[cfg(target_arch = "x86_64")]
 type AddrT = u64;
 #[cfg(not(target_arch = "x86_64"))]
@@ -15,14 +15,14 @@ extern "C" {
     fn ata_read_250gb(lba: u64, count: u16, buffer: *mut u16) -> i32;
 }
 
-/* ── Güvenlik sabitleri ─────────────────────────────────────── */
+
 const DISK_LIMIT_LBA:    u64 = 488_397_168;
 const SECTOR_SIZE:       usize = 512;
-const MAX_WRITE_SECTORS: u16 = 128;       /* tek seferde max 64KB */
-const MAGIC_CANARY:      u32 = 0xDEADC0DE; /* bellek bütünlük testi */
-const XOR_KEY:           u8  = 0xA5;       /* basit veri doğrulama */
+const MAX_WRITE_SECTORS: u16 = 128;       
+const MAGIC_CANARY:      u32 = 0xDEADC0DE; 
+const XOR_KEY:           u8  = 0xA5;       
 
-/* ── Hata tipleri ───────────────────────────────────────────── */
+
 #[derive(Debug)]
 pub enum DiskError {
     LbaOutOfBounds,
@@ -35,7 +35,7 @@ pub enum DiskError {
     UnalignedAccess,
 }
 
-/* ── Güvenli Disk Yöneticisi ────────────────────────────────── */
+
 pub struct SafeDiskManager {
     sector_size:    usize,
     disk_limit_lba: u64,
@@ -55,12 +55,12 @@ impl SafeDiskManager {
         }
     }
 
-    /* ── Canary kontrolü (bellek bozulma tespiti) ───────────── */
+    
     fn check_integrity(&self) -> bool {
         self.canary == MAGIC_CANARY
     }
 
-    /* ── LBA sınır kontrolü ─────────────────────────────────── */
+    
     fn validate_lba(&self, lba: u64, count: u16) -> Result<(), DiskError> {
         if lba > self.disk_limit_lba {
             return Err(DiskError::LbaOutOfBounds);
@@ -72,7 +72,7 @@ impl SafeDiskManager {
         Ok(())
     }
 
-    /* ── Veri doğrulama (checksum) ──────────────────────────── */
+    
     fn checksum(data: &[u16]) -> u32 {
         let mut sum: u32 = 0;
         for &word in data {
@@ -82,14 +82,14 @@ impl SafeDiskManager {
         sum
     }
 
-    /* ── Güvenli yazma ──────────────────────────────────────── */
+    
     pub fn secure_write(&mut self, lba: u64, data: &[u16]) -> Result<u32, DiskError> {
-        /* Bellek bütünlük kontrolü */
+        
         if !self.check_integrity() {
             return Err(DiskError::IntegrityCheckFailed);
         }
 
-        /* Boş veri kontrolü */
+        
         if data.is_empty() {
             return Err(DiskError::EmptyData);
         }
@@ -103,15 +103,15 @@ impl SafeDiskManager {
             return Err(DiskError::EmptyData);
         }
 
-        /* LBA sınır kontrolü */
+        
         self.validate_lba(lba, sector_count)?;
 
-        /* Buffer overflow kontrolü */
+        
         if data.len() > (MAX_WRITE_SECTORS as usize * 256) {
             return Err(DiskError::BufferOverflow);
         }
 
-        /* Checksum hesapla */
+        
         let checksum = Self::checksum(data);
 
         /* Donanıma yaz */
@@ -128,7 +128,7 @@ impl SafeDiskManager {
         }
     }
 
-    /* ── Güvenli okuma ──────────────────────────────────────── */
+    
     pub fn secure_read(&mut self, lba: u64, buffer: &mut [u16]) -> Result<u32, DiskError> {
         if !self.check_integrity() {
             return Err(DiskError::IntegrityCheckFailed);
