@@ -112,5 +112,14 @@ int sys_write(uint32_t fd, addr_t buf, uint32_t count);
 void sys_exit(int code);
 uint32_t sys_get_count();
 uint32_t sys_get_blocked_count();
-
+uint32_t fb_get_width(void);
+uint32_t fb_get_height(void);
+uint32_t font_get_width(void);
+uint32_t font_get_height(void);
+int security_scan_buffer(const uint8_t *buf, uint64_t size);
+void     paging_map_user(uint64_t virt, uint64_t phys, uint64_t size);
+void     paging_switch_user(void);
+void     paging_switch_kernel(void);
+void     fb_fill_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color);
+void     font_draw_string(uint32_t x, uint32_t y, const char *s, uint32_t fg, uint32_t bg, int scale);
 #endif
