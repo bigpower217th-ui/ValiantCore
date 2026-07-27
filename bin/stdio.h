@@ -66,7 +66,7 @@ static inline void sys_write(int fd, const char* buf, size_t size) {
               register long rdi_reg __asm__("rdi") = fd;
               register char* rsi_reg __asm__("rsi") = buf;
               register size_t rdx_reg __asm__("rdx") = size;
-              register long rax_reg __asm___("rax")  = 2;
+              register long rax_reg __asm__("rax") = 0;
               
 
               __asm__ __volatile__(
@@ -80,7 +80,7 @@ static inline void sys_write(int fd, const char* buf, size_t size) {
          __asm__ __volatile__(
             "movl $2, %%eax\n\t"
             "int $0x80"
-            : "a="(bytes_read)
+            : "=a"(bytes_read)
             : "b"(fd), "c"(buf), "d"(size)
             : "memory"
 
