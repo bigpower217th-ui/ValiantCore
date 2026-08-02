@@ -77,7 +77,7 @@ static inline uint32_t inl(uint16_t port) {
     return ret;
 }
 
-void kprint(char *message);
+void kprint(const char *message);   
 void init_gdt();
 void init_idt();
 void init_scheduler();
