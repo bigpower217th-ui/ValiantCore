@@ -16,7 +16,7 @@ extern int rtl8111_init();
 extern void net_init();
 
 
-void kmain() {
+void kmain(void *mb2_info) {
 
    init_gdt();     // By Finn Dev
    pic_init();     // 
