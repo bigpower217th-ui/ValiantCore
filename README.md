@@ -3,7 +3,8 @@
 Hello I'm Finn Dev 
 
 I plan to write a lightweight, user-friendly, fast, and secure operating system that supports both x86 and ARM architectures. I am starting by writing my own kernel from scratch—I will not be using any existing kernel. For my target OS, "ValiantOS," I am building everything—including the kernel—entirely from the ground up. I am working with a zero-dollar budget and developing on a mobile device rather than a computer; if you would like to support me, you can do so by clicking the "Buy Me a Coffee" button.
-FRAMBUFFER The support has arrived!!!
+To download the source code for ValiantCore versions as a tar.xz archive, go to finndev62.github.io.
+
 
 ```bash
 
