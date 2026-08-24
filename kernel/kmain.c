@@ -37,6 +37,16 @@ font_init(Uni2_Terminus16_psf);
 font_set_color(0xFFFFFF, 0x0A0A2A);  
 fb_clear(0x0A0A2A);
 
+boot_screen_show();
+
+for (int i = 0; i < 37; i++) {
+    boot_screen_spin();
+    pit_sleep(80);
+}
+
+fb_clear(COLOR_BG);
+font_set_cursor(0, 0);
+kprint("ValiantCore ready.\n");
 
    net_init();
    if (rtl8111_init() == 0) {
