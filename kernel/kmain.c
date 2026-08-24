@@ -9,6 +9,7 @@
 #include "../include/framebuffer.h"
 #include "../include/multiboot2.h"
 #include "../include/terminus16.h"
+#include "../include/vcore_logo.h"
 
 #define kprint_banner() kprint("--- ValiantCore OS Loading ---\n")
 extern void vfs_init();
