@@ -11,7 +11,7 @@
 #include "../include/terminus16.h"
 #include "../include/vcore_logo.h"
 
-#define kprint_banner() kprint("--- ValiantCore OS Loading ---\n")
+
 extern void vfs_init();
 extern int rtl8111_init();
 extern void net_init();
@@ -25,7 +25,7 @@ void kmain(void *mb2_info) {
    init_idt();     //
    init_scheduler(); 
 
-   kprint_banner();
+   
 
    monitor_system_integrity();
    
