@@ -7,7 +7,6 @@
 #include "../include/scheduler.h"
 #include "../include/font.h"
 #include "../include/framebuffer.h"
-#include "../include/multiboot2.h"
 #include "../include/terminus16.h"
 #include "../include/vcore_logo.h"
 
@@ -17,7 +16,8 @@ extern int rtl8111_init();
 extern void net_init();
 
 
-void kmain(void *mb2_info) {
+void kmain(uint64_t fb_base, uint32_t fb_width,
+           uint32_t fb_height, uint32_t fb_pitch) {
 
    init_gdt();     // By Finn Dev
    pic_init();     // 
@@ -58,16 +58,9 @@ kprint("ValiantCore ready.\n");
 
           kprint("[KERNEL] ValiantCore ready.\n");
 
-         mb2_tag_framebuffer_t *fb_tag =
-    (mb2_tag_framebuffer_t *)mb2_find_tag(mb2_info, MB2_TAG_FRAMEBUFFER);
 
 if (fb_tag) {
-    fb_init(fb_tag->framebuffer_addr,
-            fb_tag->framebuffer_pitch,
-            fb_tag->framebuffer_width,
-            fb_tag->framebuffer_height,
-            fb_tag->framebuffer_bpp);
-    
+    fb_init(fb_base, fb_pitch, fb_width, fb_height, 32);
 }
 
    while (1);
