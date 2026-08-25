@@ -21,14 +21,13 @@ BUILD_RUSTX64 = $(BUILD_DIR)/rustX64
 C_SOURCES   := $(shell find . -name "*.c"   -not -path "./$(BUILD_DIR)/*")
 C_SOURCES   := $(filter-out %64.c,$(C_SOURCES))
 C_SOURCES := $(shell for f in $(C_SOURCES); do head -n 1 $$f | grep -Fq '/* Finn Dev */' || echo $$f; done)
-ASM_SOURCES := $(shell find . -name "*.asm" -not -path "./$(BUILD_DIR)/*")
 RS_SOURCES  := $(shell find . -name "*.rs"  -not -path "./$(BUILD_DIR)/*")
 
 CFLAGS = -ffreestanding -O2 -Iinclude -integrated-as
 NASM   = nasm
 RUSTC  = rustc
-RUSTFLAGS_X32 = --target i686-unknown-none --crate-type staticlib -C opt-level=2
-RUSTFLAGS_X64 = --target x86_64-unknown-none --crate-type staticlib -C opt-level=2
+RUSTFLAGS_X32 = --target i686-unknown-linux-gnu --crate-type staticlib -C opt-level=2
+RUSTFLAGS_X64 = --target x86_64-unknown-linux-gnu --crate-type staticlib -C opt-level=2
 
 # ------------------------------------------------------------
 # Auto-detect package manager
@@ -119,16 +118,30 @@ $(BUILD_CX64)/%_x64.o:
 # ------------------------------------------------------------
 # Assembly files (i386 / x86_64)
 # ------------------------------------------------------------
-$(BUILD_ASMX32)/%_x32.o:
-	@src=$$(find . -name "$$(basename $@ _x32.o).asm" -not -path "./$(BUILD_DIR)/*"); \
-	echo "Assembling  (32-bit): $$src -> $@"; \
-	$(NASM) -f elf32 $$src -o $@
+# -----------------------------------------------------------------------------
+# IDT Assembly file's
+# -----------------------------------------------------------------------------
+$(BUILD_ASMX64)/idt_x64.o: idt.asm
+	@echo "Assembling IDT (64-bit): idt.asm -> $@"
+	$(NASM) -f elf64 -d X86_64 idt.asm -o $@
 
-$(BUILD_ASMX64)/%_x64.o:
-	@src=$$(find . -name "$$(basename $@ _x64.o).asm" -not -path "./$(BUILD_DIR)/*"); \
-	echo "Assembling  (64-bit): $$src -> $@"; \
-	$(NASM) -f elf64 -d X86_64 $$src -o $@
+$(BUILD_ASMX32)/idt_x32.o: idt.asm
+	@echo "Assembling IDT (32-bit): idt.asm -> $@"
+	$(NASM) -f elf32 idt.asm -o $@
 
+# -----------------------------------------------------------------------------
+# UEFI Bootloader (boot_uefi.asm -> .o  .efi)
+# -----------------------------------------------------------------------------
+$(BUILD_DIR)/boot_uefi.o: boot_uefi.asm
+	@echo "Assembling UEFI Bootloader: boot_uefi.asm -> $@"
+	$(NASM) -f win64 boot_uefi.asm -o $@
+
+# -----------------------------------------------------------------------------
+# UEFI Bootloader (boot_uefi.asm -> .o
+# -----------------------------------------------------------------------------
+$(BUILD_DIR)/boot_uefi.o: boot_uefi.asm
+	@echo "Assembling UEFI Bootloader: boot_uefi.asm -> $@"
+	$(NASM) -f win32 boot_uefi.asm -o $@
 # ------------------------------------------------------------
 # Rust files (i386 / x86_64)
 # ------------------------------------------------------------
