@@ -122,4 +122,8 @@ void     paging_switch_user(void);
 void     paging_switch_kernel(void);
 void     fb_fill_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color);
 void     font_draw_string(uint32_t x, uint32_t y, const char *s, uint32_t fg, uint32_t bg, int scale);
+void         pci_init(void);
+pci_device_t *pci_find_device(uint16_t vendor, uint16_t device);
+pci_device_t *pci_find_class(uint8_t class_code, uint8_t subclass);
+addr_t        pci_get_bar_address(pci_device_t *dev, int bar_idx);
 #endif
