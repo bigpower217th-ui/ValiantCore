@@ -20,7 +20,6 @@ void kmain(uint64_t fb_base, uint32_t fb_width,
 
    monitor_system_integrity();
    pci_init();
-   ata_init();
    fat32_init();
    vfs_init();
 
