@@ -6,6 +6,7 @@
 
 #include "../../include/kernel.h"
 #include "../../include/paging.h"
+#include "../../include/framebuffer.h"
 #include <stdint.h>
 
 #define COLOR_RED_BG       0xC0392B
