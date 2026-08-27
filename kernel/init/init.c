@@ -1,9 +1,9 @@
-#include "../include/kernel.h"
-#include "../include/scheduler.h"
-#include "../include/font.h"
-#include "../include/framebuffer.h"
-#include "../include/terminus16.h"
-#include "../include/vcore_logo.h"
+#include "include/kernel.h"
+#include "include/scheduler.h"
+#include "include/font.h"
+#include "include/framebuffer.h"
+#include "include/terminus16.h"
+#include "include/vcore_logo.h"
 
 extern void vfs_init();
 extern int rtl8111_init();
